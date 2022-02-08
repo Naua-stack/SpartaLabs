@@ -1,9 +1,10 @@
 import { QueryClient, QueryClientProvider } from "react-query";
-import { Start } from "./src/screens/Start";
 import NetInfo from "@react-native-community/netinfo";
 import { onlineManager } from "react-query";
 import { ActivityIndicator } from "react-native";
 import { PersistGate } from "zustand-persist";
+import { Stack } from "./src/App.stack";
+import { useStoredPlaces } from "./src/App.store";
 
 const queryClient = new QueryClient();
 
@@ -14,10 +15,12 @@ onlineManager.setEventListener((setOnline) => {
 });
 
 export default function App() {
+  useStoredPlaces();
+
   return (
-    <PersistGate loading={<ActivityIndicator />}>
+    <PersistGate>
       <QueryClientProvider client={queryClient}>
-        <Start />
+        <Stack />
       </QueryClientProvider>
     </PersistGate>
   );

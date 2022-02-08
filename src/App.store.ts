@@ -1,59 +1,35 @@
-import AsyncStorage from "@react-native-community/async-storage";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { configurePersist } from "zustand-persist";
+import createStore from "zustand";
 
 const { persist } = configurePersist({
   storage: AsyncStorage,
-  rootKey: "@weatherapp",
+  rootKey: "root",
 });
 
-type Place = {
-  id: string;
-};
-
-export const usePlacesStore = persist({ key: "places" }, (set) => ({
-  places: [] as Place[],
-
-  favorites: [] as string[],
-
-  insert: (place: Place) => {
-    set((state: any) => {
-      if (state.places.find((p: any) => p.id === place.id)) {
-        return state;
-      }
-
-      return {
-        places: [...state.places, place],
-      };
+export const useStoredPlaces = createStore<{
+  places: any[];
+  placesInsert: (payload: any) => any;
+  placesClear: () => any;
+}>(
+  persist(
+    {
+      key: "places",
+    },
+    (set) => ({
+      places: [],
+      placesInsert: (place: any) =>
+        set((state: any) => {
+          return {
+            places: [...state.places, place],
+          };
+        }),
+      placesClear: () =>
+        set((state) => {
+          return {
+            places: [],
+          };
+        }),
     })
-  },
-
-  remove: (place: Place) => {
-    set((state: any) => ({
-      places: state.places.filter((p: any) => p.id !== place.id),
-    }))
-  },
-
-   favorite: (id: string) => {
-    set((state: any) => {
-      if (!state.places.find((p: any) => p === id)) {
-        return state;
-      }
-
-      return {
-        favorites: [...state.favorites, id],
-      };
-    })
-   },
-
-   unfavorite: (id: string) => {
-    set((state: any) => {
-      if (!state.places.find((i: string) => i === id)) {
-        return state;
-      }
-
-      return {
-        favorites: state.favorites.filter((i: string) => i !== id),
-      };
-    })
-   }
-}));
+  )
+);
