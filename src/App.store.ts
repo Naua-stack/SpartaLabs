@@ -1,35 +1,24 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { configurePersist } from "zustand-persist";
-import createStore from "zustand";
+import create from "zustand";
+import { persist } from "zustand/middleware";
 
-const { persist } = configurePersist({
-  storage: AsyncStorage,
-  rootKey: "root",
-});
-
-export const useStoredPlaces = createStore<{
-  places: any[];
-  placesInsert: (payload: any) => any;
-  placesClear: () => any;
-}>(
+export const useStoredPlaces = create(
   persist(
+    (set, get: any) => ({
+      places: [] as string[],
+
+      addPlace: (payload: string) =>
+        set({ places: [...new Set([...get().places, payload])] }),
+      removePlaces: () => set({ places: [] }),
+      removePlace: (payload: string) =>
+        set({
+          places: get().places.filter((place: string) => place !== payload),
+        }),
+    }),
+
     {
-      key: "places",
-    },
-    (set) => ({
-      places: [],
-      placesInsert: (place: any) =>
-        set((state: any) => {
-          return {
-            places: [...state.places, place],
-          };
-        }),
-      placesClear: () =>
-        set((state) => {
-          return {
-            places: [],
-          };
-        }),
-    })
+      name: "@places",
+      getStorage: () => AsyncStorage,
+    }
   )
 );
