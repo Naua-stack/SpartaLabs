@@ -7,7 +7,6 @@ export function usePlaceWeather(
   location: string,
   units: "metric" | "imperial"
 ) {
-  console.log(location, units, API_TOKEN_WEATHER, API_URL_WEATHER);
   return useQuery({
     queryKey: ["weather", location, units],
     queryFn: async () => {
