@@ -20,7 +20,6 @@ export function Citys(props: Props) {
   const { navigation } = props;
 
   const storedPlaces = useStoredPlaces((state) => state.places);
-  const removePlaces = useStoredPlaces((state) => state.removePlaces);
   return (
     <View style={styles.root}>
       <View
@@ -41,12 +40,32 @@ export function Citys(props: Props) {
         </TouchableOpacity>
       </View>
 
-      <FlatList
-        data={storedPlaces}
-        contentContainerStyle={{ alignItems: "center" }}
-        keyExtractor={(i: string) => i}
-        renderItem={({ item }) => <CardCityWeather location={item} />}
-      />
+      {storedPlaces.length > 0 ? (
+        <FlatList
+          data={storedPlaces}
+          contentContainerStyle={{ alignItems: "center" }}
+          keyExtractor={(i: string) => i}
+          renderItem={({ item }) => (
+            <CardCityWeather
+              location={item}
+              onPressCard={() => navigation.navigate("Details")}
+            />
+          )}
+        />
+      ) : (
+        <View
+          style={{
+            alignContent: "center",
+            justifyContent: "center",
+            alignItems: "center",
+            flex: 1,
+          }}
+        >
+          <Text style={{ textAlign: "center", padding: 20 }}>
+            Nenhuma cidade adicionada, adicione usando o botão de pesquisa
+          </Text>
+        </View>
+      )}
     </View>
   );
 }
