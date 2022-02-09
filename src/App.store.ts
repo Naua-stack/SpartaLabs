@@ -9,7 +9,12 @@ export const useStoredPlaces = create(
       favorites: [] as string[],
 
       addPlace: (payload: string) =>
-        set({ places: [...new Set([...get().places, payload])] }),
+        set({
+          places: [...new Set([...get().places, payload])],
+          favorites: get().favorites.filter(
+            (place: string) => place !== payload
+          ),
+        }),
       removePlaces: () => set({ places: [] }),
       favoriteToggle: (payload: string) =>
         set({ favorites: [...new Set([...get().favorites, payload])] }),
