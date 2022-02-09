@@ -40,7 +40,10 @@ export function CardCityWeather(item: CityWeather) {
             <View>
               {data.weather.map((weather: weather) => {
                 return (
-                  <Text style={{ fontSize: 22, color: "orange" }}>
+                  <Text
+                    key={weather.id}
+                    style={{ fontSize: 22, color: "orange" }}
+                  >
                     {weather.description}
                   </Text>
                 );
