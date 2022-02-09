@@ -20,9 +20,9 @@ export function usePlaces(query: string) {
       );
 
       return (
-        data?.predictions.map((i: { description: string }) => ({
-          location: i.description,
-        })) ?? []
+        data?.predictions.map((i: { description: string }) => {
+          return i.description;
+        }) ?? []
       );
     },
     onError: () => toast("Não foi possivel buscar as cidades"),
