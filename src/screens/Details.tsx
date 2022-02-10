@@ -1,17 +1,15 @@
 import React from "react";
 import { Text, View, StyleSheet, ActivityIndicator } from "react-native";
-import { FlatList, TouchableOpacity } from "react-native-gesture-handler";
+import {
+  FlatList,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native-gesture-handler";
 import { usePlaceWeatherForecast } from "../api";
-import { statusBarHeight } from "../App.constants";
 import { CardDetailsDays } from "../components/CardDetailsDays";
 import { Ionicons } from "@expo/vector-icons";
 type Weather = {
   description: string;
-};
-type Props = {
-  navigation: {
-    navigate: (to: string) => void;
-  };
 };
 export function Details({ route }: any) {
   const { location, name, navigation } = route.params;
@@ -53,11 +51,17 @@ export function Details({ route }: any) {
         })}
       </View>
 
-      <View style={{ alignItems: "center" }}>
+      <View
+        style={{
+          flexGrow: 1,
+          flex: 1,
+          alignItems: "center",
+          paddingBottom: 10,
+        }}
+      >
         <Text style={{ fontSize: 15 }}>Previsão para os próximos 5 dias</Text>
         <FlatList
           keyExtractor={(i) => i.dt}
-          style={{ paddingBottom: 10 }}
           data={data.daily.slice(0, 6)}
           renderItem={({ item, index }: any) => (
             <CardDetailsDays item={item} index={index} />
