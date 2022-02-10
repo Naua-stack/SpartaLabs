@@ -43,6 +43,7 @@ export function Search(props: Props) {
 
       <View style={styles.headerSearch}>
         <TextInput
+          autoFocus={true}
           placeholder="Busque uma cidade"
           style={styles.inputSearch}
           onChangeText={(text) => setPlaceQuery(text)}
@@ -86,13 +87,14 @@ const styles = StyleSheet.create({
   },
   headerSearch: {
     backgroundColor: "#f3f3f3",
-    height: 35,
+
     margin: 15,
     marginTop: 30,
     borderRadius: 7,
   },
   inputSearch: {
+    height: 30,
+    margin: 10,
     textAlign: "left",
-    margin: 5,
   },
 });
