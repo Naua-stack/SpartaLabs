@@ -44,7 +44,7 @@ export function CardCityWeather(item: Props) {
       navigation: navigation,
     });
   }
-  console.log(data);
+
   return !isLoading && data ? (
     <TouchableOpacity onPress={() => onPressCard()}>
       <View style={styles.card}>
