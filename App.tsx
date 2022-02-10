@@ -3,8 +3,11 @@ import NetInfo from "@react-native-community/netinfo";
 import { onlineManager } from "react-query";
 import { Stack } from "./src/App.stack";
 import { useStoredPlaces } from "./src/App.store";
+import { LogBox } from "react-native";
 import "react-native-gesture-handler";
 const queryClient = new QueryClient();
+
+LogBox.ignoreLogs(["Setting a timer for a long period of time"]);
 
 onlineManager.setEventListener((setOnline) => {
   return NetInfo.addEventListener((state) => {
