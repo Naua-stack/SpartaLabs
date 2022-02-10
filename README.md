@@ -2,8 +2,6 @@
 
 <!-- ABOUT THE PROJECT -->
 
-![home](https://user-images.githubusercontent.com/62629609/153515567-3ddc5f44-cda6-4fa1-b044-7196ff75f0fa.jpeg)
-
 <div align="center">
 <img  src="https://user-images.githubusercontent.com/62629609/153515567-3ddc5f44-cda6-4fa1-b044-7196ff75f0fa.jpeg" />
 </div>
