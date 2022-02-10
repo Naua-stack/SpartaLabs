@@ -3,6 +3,10 @@ import axios from "axios";
 import { API_URL_GOOGLE, API_TOKEN_GOOGLE } from "../App.constants";
 import { toast } from "../lib/Toast";
 
+type Place = {
+  description: string;
+  place_id: string;
+};
 export function usePlaces(query: string) {
   return useQuery({
     queryKey: ["places", query],
@@ -20,9 +24,10 @@ export function usePlaces(query: string) {
       );
 
       return (
-        data?.predictions.map((i: { description: string }) => {
-          return i.description;
-        }) ?? []
+        data?.predictions.map((i: Place) => ({
+          description: i.description,
+          place_id: i.place_id,
+        })) ?? []
       );
     },
     onError: () => toast("Não foi possivel buscar as cidades"),
