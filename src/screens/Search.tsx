@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { Text, View, StyleSheet, ActivityIndicator } from "react-native";
+import {
+  Text,
+  View,
+  StyleSheet,
+  ActivityIndicator,
+  Platform,
+} from "react-native";
 import {
   FlatList,
   TextInput,
@@ -7,10 +13,10 @@ import {
 } from "react-native-gesture-handler";
 import { useDebounce } from "use-debounce/lib";
 import { usePlaces } from "../api";
-import Constants from "expo-constants";
 import { CardCity } from "../components/CardCity";
 import { useStoredPlaces } from "../App.store";
 import { Ionicons } from "@expo/vector-icons";
+import { statusBarHeight } from "../App.constants";
 
 type Props = {
   navigation: {
@@ -21,7 +27,7 @@ type Props = {
 export function Search(props: Props) {
   const { navigation } = props;
   const [placeQuery, setPlaceQuery] = useState("");
-  const [debouncedPlaceQuery] = useDebounce(placeQuery, 300);
+  const [debouncedPlaceQuery] = useDebounce(placeQuery, 100);
   const { isLoading, data = [] } = usePlaces(debouncedPlaceQuery);
 
   const storedPlaces = useStoredPlaces((state) => state.places);
@@ -29,7 +35,7 @@ export function Search(props: Props) {
   return (
     <View style={styles.root}>
       <TouchableOpacity
-        onPress={() => navigation.navigate("Citys")}
+        onPress={() => navigation.navigate("Cities")}
         style={{ height: 30, width: 30, marginTop: 2, marginLeft: 15 }}
       >
         <Ionicons name="arrow-back" size={30} />
@@ -47,11 +53,15 @@ export function Search(props: Props) {
       {data.length > 0 ? (
         <FlatList
           contentContainerStyle={{ alignItems: "center" }}
-          keyExtractor={(i: string) => i}
+          keyExtractor={(i: { description: string; place_id: string }) =>
+            i.place_id
+          }
           data={data}
           renderItem={({ item }) => (
             <CardCity
-              isAddedPlace={storedPlaces.includes(item)}
+              isAddedPlace={Boolean(
+                storedPlaces.find((i) => i.description === item.description)
+              )}
               location={item}
               addPlace={() => storedPlacesInsert(item)}
             />
@@ -71,7 +81,7 @@ export function Search(props: Props) {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    paddingTop: Constants.statusBarHeight,
+    paddingTop: Platform.OS === "ios" ? statusBarHeight : 50,
     justifyContent: "center",
   },
   headerSearch: {
@@ -83,6 +93,6 @@ const styles = StyleSheet.create({
   },
   inputSearch: {
     textAlign: "left",
-    margin: 10,
+    margin: 5,
   },
 });
