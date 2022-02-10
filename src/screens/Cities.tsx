@@ -19,7 +19,8 @@ type Props = {
 export function Cities(props: Props) {
   const { navigation } = props;
   const storedPlaces = useStoredPlaces((state) => state.places);
-
+  const units = useStoredPlaces((state) => state.units);
+  const changeUnits = useStoredPlaces((state) => state.changeUnits);
   return (
     <View style={styles.root}>
       <View
@@ -40,13 +41,35 @@ export function Cities(props: Props) {
           <FontAwesome name="search-plus" size={30} />
         </TouchableOpacity>
       </View>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "flex-end",
+          marginTop: 20,
+          marginRight: 20,
+        }}
+      >
+        <TouchableOpacity
+          style={{ marginRight: 10 }}
+          onPress={() => changeUnits("metric")}
+        >
+          <Text style={{ fontSize: 25 }}>Cº</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => changeUnits("imperial")}>
+          <Text style={{ fontSize: 25 }}>Fº</Text>
+        </TouchableOpacity>
+      </View>
       {storedPlaces.length > 0 ? (
         <FlatList
           data={storedPlaces}
           contentContainerStyle={{ alignItems: "center" }}
           keyExtractor={(i) => i.place_id}
           renderItem={({ item }) => (
-            <CardCityWeather location={item} navigation={navigation} />
+            <CardCityWeather
+              location={item}
+              navigation={navigation}
+              units={units}
+            />
           )}
         />
       ) : (

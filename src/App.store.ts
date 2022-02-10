@@ -12,6 +12,7 @@ export const useStoredPlaces = create(
     (set, get: any) => ({
       places: [] as Place[],
       favorites: [] as string[],
+      units: "metric",
 
       addPlace: (payload: Place) =>
         set({
@@ -36,6 +37,10 @@ export const useStoredPlaces = create(
           places: get().places.filter(
             (place: Place) => place.place_id !== payload.place_id
           ),
+        }),
+      changeUnits: (payload: string) =>
+        set({
+          units: payload,
         }),
     }),
 

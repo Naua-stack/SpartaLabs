@@ -8,10 +8,7 @@ import {
 } from "../App.constants";
 import { toast } from "../lib/Toast";
 
-export function usePlaceWeather(
-  place_id: string,
-  units: "metric" | "imperial"
-) {
+export function usePlaceWeather(place_id: string, units: string) {
   return useQuery({
     queryKey: ["weather", place_id, units],
     queryFn: async () => {
