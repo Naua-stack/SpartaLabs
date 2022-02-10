@@ -1,3 +1,3 @@
 export * from "./Details";
 export * from "./Search";
-export * from "./Citys";
+export * from "./Cities";
