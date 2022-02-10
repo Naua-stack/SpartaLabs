@@ -8,6 +8,19 @@ import {
 } from "../App.constants";
 import { toast } from "../lib/Toast";
 
+type weatherData = {
+  coord: {
+    lat: string;
+    lon: string;
+  };
+  main: {
+    temp_min: number;
+    temp_max: number;
+    temp: number;
+  };
+  weather: { icon: string; description: string }[];
+};
+
 export function usePlaceWeather(place_id: string, units: string) {
   return useQuery({
     queryKey: ["weather", place_id, units],
@@ -21,15 +34,18 @@ export function usePlaceWeather(place_id: string, units: string) {
           },
         })
         .then(async ({ data }) => {
-          const weather = await axios.get(`${API_URL_WEATHER}weather`, {
-            params: {
-              lat: data.result.geometry.location.lat,
-              lon: data.result.geometry.location.lng,
-              lang: "pt_br",
-              appid: API_TOKEN_WEATHER,
-              units: units,
-            },
-          });
+          const weather = await axios.get<weatherData>(
+            `${API_URL_WEATHER}weather`,
+            {
+              params: {
+                lat: data.result.geometry.location.lat,
+                lon: data.result.geometry.location.lng,
+                lang: "pt_br",
+                appid: API_TOKEN_WEATHER,
+                units: units,
+              },
+            }
+          );
           return weather.data;
         });
     },
