@@ -9,15 +9,17 @@ import {
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 type City = {
-  location: string;
+  location: any;
   addPlace: () => void;
   isAddedPlace: boolean;
 };
 export function CardCity(item: City) {
   const { location, addPlace, isAddedPlace } = item;
   const itemCity = {
-    title: location.substring(0, location.indexOf(",")),
-    subtitle: location.substring(location.indexOf(",") + 2),
+    title: location.description.substring(0, location.description.indexOf(",")),
+    subtitle: location.description.substring(
+      location.description.indexOf(",") + 2
+    ),
   };
 
   return (
