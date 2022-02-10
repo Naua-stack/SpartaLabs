@@ -1,14 +1,14 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { Citys, Details, Search } from "./screens";
+import { Cities, Details, Search } from "./screens";
 const { Navigator, Screen } = createStackNavigator();
 
 export function Stack() {
   return (
     <NavigationContainer>
       <Navigator
-        initialRouteName="Citys"
+        initialRouteName="Cities"
         headerMode="none"
         screenOptions={{
           cardStyle: {
@@ -16,7 +16,7 @@ export function Stack() {
           },
         }}
       >
-        <Screen name="Citys" component={Citys} />
+        <Screen name="Cities" component={Cities} />
         <Screen name="Details" component={Details} />
         <Screen name="Search" component={Search} />
       </Navigator>
