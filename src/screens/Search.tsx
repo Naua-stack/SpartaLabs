@@ -36,7 +36,7 @@ export function Search(props: Props) {
     <View style={styles.root}>
       <TouchableOpacity
         onPress={() => navigation.navigate("Cities")}
-        style={{ height: 30, width: 30, marginTop: 2, marginLeft: 15 }}
+        style={styles.buttonBack}
       >
         <Ionicons name="arrow-back" size={30} />
       </TouchableOpacity>
@@ -69,9 +69,7 @@ export function Search(props: Props) {
           )}
         />
       ) : (
-        <View
-          style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
-        >
+        <View style={styles.containerEmptyList}>
           <Text>Cidade não encontrada</Text>
         </View>
       )}
@@ -96,5 +94,11 @@ const styles = StyleSheet.create({
     height: 30,
     margin: 10,
     textAlign: "left",
+  },
+  buttonBack: { height: 30, width: 30, marginTop: 2, marginLeft: 15 },
+  containerEmptyList: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

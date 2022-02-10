@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Text, View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet, ActivityIndicator } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { usePlaceWeather } from "../api";
 import { Entypo, EvilIcons } from "@expo/vector-icons";
@@ -10,10 +10,11 @@ type Props = {
   navigation: {
     navigate: (to: string, props: any) => void;
   };
+  units: string;
 };
 
-export function CardCityWeather(item: Props) {
-  const { location, navigation } = item;
+export function CardCityWeather(props: Props) {
+  const { location, navigation, units } = props;
   const itemCity = {
     title: location.description.substring(0, location.description.indexOf(",")),
     subtitle: location.description.substring(
@@ -21,7 +22,7 @@ export function CardCityWeather(item: Props) {
     ),
   };
 
-  const { isLoading, data = [] } = usePlaceWeather(location.place_id, "metric");
+  const { isLoading, data } = usePlaceWeather(location.place_id, units);
   const removePlace = useStoredPlaces((state) => state.removePlace);
   const favoriteToggle = useStoredPlaces((state) => state.favorite);
   const unfavoriteToggle = useStoredPlaces((state) => state.unfavorite);
@@ -39,7 +40,7 @@ export function CardCityWeather(item: Props) {
 
   function onPressCard() {
     navigation.navigate("Details", {
-      location: data.coord,
+      location: data?.coord,
       name: location.description,
       navigation: navigation,
     });
@@ -48,14 +49,7 @@ export function CardCityWeather(item: Props) {
   return !isLoading && data ? (
     <TouchableOpacity onPress={() => onPressCard()}>
       <View style={styles.card}>
-        <View
-          style={{
-            flex: 1,
-            padding: 20,
-            flexDirection: "row",
-            justifyContent: "space-between",
-          }}
-        >
+        <View style={styles.containerCardIntern}>
           <View>
             <Text style={{ fontSize: 24 }}>{itemCity.title}</Text>
             <Text style={{ fontSize: 15, marginLeft: 2 }}>
@@ -64,13 +58,13 @@ export function CardCityWeather(item: Props) {
 
             <View style={{ flexDirection: "row" }}>
               <View>
-                <ImageIcon icon={data.weather[0].icon} />
+                <ImageIcon item={data.weather[0].icon} />
                 <Text style={{ fontSize: 22, color: "orange" }}>
                   {data.weather[0].description}
                 </Text>
                 <Text style={{ fontSize: 13, margin: 3 }}>
-                  {Math.floor(data.main.temp_min)}º -{" "}
-                  {Math.floor(data.main.temp_min)}º
+                  {Math.round(data.main.temp_min)}º -{" "}
+                  {Math.round(data.main.temp_min)}º
                 </Text>
               </View>
             </View>
@@ -81,7 +75,7 @@ export function CardCityWeather(item: Props) {
             }}
           >
             <Text style={{ fontSize: 25, color: "orange" }}>
-              {Math.floor(data.main.temp)}º
+              {Math.round(data.main.temp)}º
             </Text>
 
             <TouchableOpacity
@@ -96,7 +90,7 @@ export function CardCityWeather(item: Props) {
             </TouchableOpacity>
             <TouchableOpacity
               style={{ alignItems: "center" }}
-              onPress={() => removePlace(item.location)}
+              onPress={() => removePlace(location)}
             >
               <Entypo name="trash" size={20} />
             </TouchableOpacity>
@@ -104,7 +98,11 @@ export function CardCityWeather(item: Props) {
         </View>
       </View>
     </TouchableOpacity>
-  ) : null;
+  ) : (
+    <View style={styles.containerCardIntern}>
+      <ActivityIndicator size={20} color={"#000"} />
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -115,5 +113,11 @@ const styles = StyleSheet.create({
     marginTop: 20,
     alignContent: "center",
     borderRadius: 10,
+  },
+  containerCardIntern: {
+    flex: 1,
+    padding: 20,
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
 });
