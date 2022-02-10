@@ -44,7 +44,7 @@ export function Details({ route }: any) {
           {name.substring(0, name.indexOf(","))}
         </Text>
         <Text style={{ fontSize: 85, marginLeft: 15 }}>
-          {Math.floor(data.current.temp)}º
+          {Math.round(data.current.temp)}º
         </Text>
         {data.current.weather.map((weather: Weather) => {
           return <Text style={{ fontSize: 25 }}>{weather.description}</Text>;

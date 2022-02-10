@@ -42,14 +42,14 @@ export function CardDetailsDays(props: Props) {
             <ImageIcon item={item.weather[0].icon} />
             <Text style={{ fontSize: 17 }}>{item.weather[0].description}</Text>
             <Text style={{ fontSize: 15 }}>
-              {Math.floor(item.temp.min)}º - {Math.floor(item.temp.max)}º
+              {Math.round(item.temp.min)}º - {Math.round(item.temp.max)}º
             </Text>
           </View>
         </View>
       </View>
       <View style={{ margin: 20 }}>
         <Text style={{ fontSize: 30, color: "orange" }}>
-          {Math.floor(item.temp.day)}º
+          {Math.round(item.temp.day)}º
         </Text>
       </View>
     </View>

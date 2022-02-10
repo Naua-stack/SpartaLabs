@@ -10,10 +10,11 @@ type Props = {
   navigation: {
     navigate: (to: string, props: any) => void;
   };
+  units: string;
 };
 
 export function CardCityWeather(item: Props) {
-  const { location, navigation } = item;
+  const { location, navigation, units } = item;
   const itemCity = {
     title: location.description.substring(0, location.description.indexOf(",")),
     subtitle: location.description.substring(
@@ -21,7 +22,7 @@ export function CardCityWeather(item: Props) {
     ),
   };
 
-  const { isLoading, data = [] } = usePlaceWeather(location.place_id, "metric");
+  const { isLoading, data = [] } = usePlaceWeather(location.place_id, units);
   const removePlace = useStoredPlaces((state) => state.removePlace);
   const favoriteToggle = useStoredPlaces((state) => state.favorite);
   const unfavoriteToggle = useStoredPlaces((state) => state.unfavorite);
@@ -69,8 +70,8 @@ export function CardCityWeather(item: Props) {
                   {data.weather[0].description}
                 </Text>
                 <Text style={{ fontSize: 13, margin: 3 }}>
-                  {Math.floor(data.main.temp_min)}º -{" "}
-                  {Math.floor(data.main.temp_min)}º
+                  {Math.round(data.main.temp_min)}º -{" "}
+                  {Math.round(data.main.temp_min)}º
                 </Text>
               </View>
             </View>
