@@ -4,36 +4,47 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { usePlaceWeather } from "../api";
 import { Entypo, EvilIcons } from "@expo/vector-icons";
 import { useStoredPlaces } from "../App.store";
+import { ImageIcon } from "./ImageIcon";
 type Props = {
-  location: string;
-  onPressCard: () => any;
+  location: { description: string; place_id: string };
+  navigation: {
+    navigate: (to: string, props: any) => void;
+  };
 };
-type weather = {
-  id: number;
-  main: string;
-  description: string;
-  icon: string;
-};
+
 export function CardCityWeather(item: Props) {
-  const { location, onPressCard } = item;
+  const { location, navigation } = item;
   const itemCity = {
-    title: location.substring(0, location.indexOf(",")),
-    subtitle: location.substring(location.indexOf(",") + 2),
+    title: location.description.substring(0, location.description.indexOf(",")),
+    subtitle: location.description.substring(
+      location.description.indexOf(",") + 2
+    ),
   };
 
-  const { isLoading, data = [] } = usePlaceWeather(itemCity.title, "metric");
+  const { isLoading, data = [] } = usePlaceWeather(location.place_id, "metric");
   const removePlace = useStoredPlaces((state) => state.removePlace);
-  const favoriteToggle = useStoredPlaces((state) => state.favoriteToggle);
-  const unfavoriteToggle = useStoredPlaces((state) => state.unfavoriteToggle);
+  const favoriteToggle = useStoredPlaces((state) => state.favorite);
+  const unfavoriteToggle = useStoredPlaces((state) => state.unfavorite);
   const favorites = useStoredPlaces((state) => state.favorites);
-  const favorited = favorites.includes(item.location);
+
+  const favorited = favorites.includes(location.place_id);
+
   function favoritePlace() {
     if (favorited) {
-      unfavoriteToggle(item.location);
+      unfavoriteToggle(location);
     } else {
-      favoriteToggle(item.location);
+      favoriteToggle(location);
     }
   }
+
+  function onPressCard() {
+    navigation.navigate("Details", {
+      location: data.coord,
+      name: location.description,
+      navigation: navigation,
+    });
+  }
+  console.log(data);
   return !isLoading && data ? (
     <TouchableOpacity onPress={() => onPressCard()}>
       <View style={styles.card}>
@@ -51,20 +62,15 @@ export function CardCityWeather(item: Props) {
               {itemCity.subtitle}
             </Text>
 
-            <View style={{ marginTop: 30, flexDirection: "row" }}>
+            <View style={{ flexDirection: "row" }}>
               <View>
-                {data.weather.map((weather: weather) => {
-                  return (
-                    <Text
-                      key={weather.id}
-                      style={{ fontSize: 22, color: "orange" }}
-                    >
-                      {weather.description}
-                    </Text>
-                  );
-                })}
+                <ImageIcon icon={data.weather[0].icon} />
+                <Text style={{ fontSize: 22, color: "orange" }}>
+                  {data.weather[0].description}
+                </Text>
                 <Text style={{ fontSize: 13, margin: 3 }}>
-                  {data.main.temp_min}º - {data.main.temp_min}º
+                  {Math.floor(data.main.temp_min)}º -{" "}
+                  {Math.floor(data.main.temp_min)}º
                 </Text>
               </View>
             </View>
@@ -75,7 +81,7 @@ export function CardCityWeather(item: Props) {
             }}
           >
             <Text style={{ fontSize: 25, color: "orange" }}>
-              {data.main.temp}º
+              {Math.floor(data.main.temp)}º
             </Text>
 
             <TouchableOpacity
@@ -104,7 +110,7 @@ export function CardCityWeather(item: Props) {
 const styles = StyleSheet.create({
   card: {
     backgroundColor: "#a6dced",
-    height: 150,
+    height: 180,
     width: 320,
     marginTop: 20,
     alignContent: "center",
