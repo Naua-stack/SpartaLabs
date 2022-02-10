@@ -6,50 +6,47 @@ import {
   TouchableOpacity,
   FlatList,
 } from "react-native";
-import Constants from "expo-constants";
 import { useStoredPlaces } from "../App.store";
 import { CardCityWeather } from "../components/CardCityWeather";
-
+import { statusBarHeight } from "../App.constants";
+import { FontAwesome } from "@expo/vector-icons";
 type Props = {
   navigation: {
     navigate: (to: string) => void;
   };
 };
 
-export function Citys(props: Props) {
+export function Cities(props: Props) {
   const { navigation } = props;
-
   const storedPlaces = useStoredPlaces((state) => state.places);
+
   return (
     <View style={styles.root}>
       <View
         style={{
-          backgroundColor: "#add8ec",
-          marginTop: Constants.statusBarHeight - 5,
-          justifyContent: "center",
+          margin: 20,
+          alignContent: "center",
+          flexDirection: "row",
+          justifyContent: "space-between",
         }}
       >
-        <Text style={{ color: "#fff", fontSize: 25 }}>Cidades</Text>
+        <Text style={{ fontSize: 30 }}>Cidades</Text>
         <TouchableOpacity
           style={{
             alignItems: "flex-end",
           }}
           onPress={() => navigation.navigate("Search")}
         >
-          <Text>Pesquisar</Text>
+          <FontAwesome name="search-plus" size={30} />
         </TouchableOpacity>
       </View>
-
       {storedPlaces.length > 0 ? (
         <FlatList
           data={storedPlaces}
           contentContainerStyle={{ alignItems: "center" }}
-          keyExtractor={(i: string) => i}
+          keyExtractor={(i) => i.place_id}
           renderItem={({ item }) => (
-            <CardCityWeather
-              location={item}
-              onPressCard={() => navigation.navigate("Details")}
-            />
+            <CardCityWeather location={item} navigation={navigation} />
           )}
         />
       ) : (
@@ -73,6 +70,6 @@ export function Citys(props: Props) {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    flexDirection: "column",
+    marginTop: statusBarHeight,
   },
 });
