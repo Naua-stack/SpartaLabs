@@ -42,7 +42,6 @@ export function CardCityWeather(props: Props) {
     navigation.navigate("Details", {
       location: data?.coord,
       name: location.description,
-      navigation: navigation,
     });
   }
 
