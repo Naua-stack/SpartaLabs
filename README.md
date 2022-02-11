@@ -1,6 +1,6 @@
 # :react-native: WeatherApp
 
-[Download - APK](https://exp-shell-app-assets.s3.us-west-1.amazonaws.com/android/%40naua/SpartaLabs-f3b7ecf5e780449ba791165ef948666d-signed.apk)
+[Download - APK](https://exp-shell-app-assets.s3.us-west-1.amazonaws.com/android/%40naua/SpartaLabs-7e375eeaf2be4b66ac6c176ac841d5d1-signed.apk)
 
 <!-- ABOUT THE PROJECT -->
 
