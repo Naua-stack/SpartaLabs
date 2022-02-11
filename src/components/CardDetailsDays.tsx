@@ -33,7 +33,9 @@ export function CardDetailsDays(props: Props) {
       >
         <View style={{ justifyContent: "space-between" }}>
           <View>
-            <Text style={{ fontSize: 26 }}>{getDayOfWeek()}</Text>
+            <Text style={{ fontSize: 26, textTransform: "capitalize" }}>
+              {getDayOfWeek()}
+            </Text>
             <Text style={{ fontSize: 17 }}>
               {moment.unix(item.dt).format("DD [de] MMMM")}
             </Text>
